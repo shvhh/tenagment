@@ -1,6 +1,45 @@
 const { Component } = React;
 const { BrowserRouter, Route, Link, Redirect } = window.ReactRouterDOM;
 
+class Dashboard extends Component{
+  constructor(props) {
+    super(props);
+    this.state = { selected: "home" ,firststate:'true'};
+  } 
+  render()
+  {
+    return(<BrowserRouter>
+        <div className="home">
+    <div className="container-fluid display-table">
+        <div className="row display-table-row">
+    <div className="col-md-2 col-sm-1 hidden-xs display-table-cell v-align box" id="navigation">
+                <div className="logo">
+                    asdf
+                </div>
+                <div className="navi">
+                    <ul>
+                        <li className={(this.state.selected=='home')?'active':''}><Link to="#" onClick={()=>this.setState({selected:'home'})}><i className="fa fa-home" aria-hidden="true"></i><span className="hidden-xs hidden-sm">Home</span></Link></li>
+                        <li className={(this.state.selected=='home1')?'active':''}><Link to="#" onClick={()=>this.setState({selected:'home1'})}><i className="fa fa-tasks" aria-hidden="true"></i><span className="hidden-xs hidden-sm">Workflow</span></Link></li>
+                        <li className={(this.state.selected=='home2')?'active':''}><Link to="#" onClick={()=>this.setState({selected:'home2'})}><i className="fa fa-tasks" aria-hidden="true"></i><span className="hidden-xs hidden-sm">Workflow</span></Link></li>
+                        <li className={(this.state.selected=='home3')?'active':''}><Link to="#" onClick={()=>this.setState({selected:'home3'})}><i className="fa fa-bar-chart" aria-hidden="true"></i><span className="hidden-xs hidden-sm">Statistics</span></Link></li>
+                        <li className={(this.state.selected=='home4')?'active':''}><Link to="#" onClick={()=>this.setState({selected:'home4'})}><i className="fa fa-user" aria-hidden="true"></i><span className="hidden-xs hidden-sm">Calender</span></Link></li>
+                        <li className={(this.state.selected=='home5')?'active':''}><Link to="#" onClick={()=>this.setState({selected:'home5'})}><i className="fa fa-calendar" aria-hidden="true"></i><span className="hidden-xs hidden-sm">Users</span></Link></li>
+                        <li className={(this.state.selected=='home6')?'active':''}><Link to="#" onClick={()=>this.setState({selected:'home6'})}><i className="fa fa-cog" aria-hidden="true"></i><span className="hidden-xs hidden-sm">Setting</span></Link></li>
+                    </ul>
+                </div>
+            </div>       
+
+
+
+
+        </div>
+        </div>
+        </div>
+        </BrowserRouter>
+);
+  } 
+}
+
 class Input extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +55,7 @@ class Input extends Component {
         type={this.props.type}
         name={this.props.name}
         id={this.props.id}
-        tabindex={this.props.tabindex}
+        
         className={this.props.className}
         placeholder={this.props.placeholder}
         value={this.state.val}
@@ -48,7 +87,7 @@ class Login extends Component {
       if (user) {
         this.props.login();
         console.log(user);
-        sessionStorage.setItem("uid", user.uid);
+        
       }
     });
   }
@@ -164,14 +203,18 @@ class SignUp extends Component {
     } else {
       this.setState({ error: "Password Don't Match" });
     }
+    
+
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.props.login();
-        console.log(user);
-        firebase
-          .database()
-          .ref(user.uid)
+        user.updateProfile({
+  displayName: this.state.name,
+}).then(() => {
+    this.props.login();
+ firebase.database().ref(user.uid)
           .set({ name: this.state.name, email: this.state.email });
+          
+})
       }
     });
   }
@@ -294,8 +337,9 @@ class Main extends Component {
     console.log(this.state.authentication);
   }
   render() {
+    
     if (this.state.authentication) {
-      return <h3>you st</h3>;
+      return (< Dashboard />);
     } else {
       return (
         <BrowserRouter>
